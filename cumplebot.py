@@ -10,16 +10,16 @@ import csv
 from apscheduler.schedulers.background import BackgroundScheduler
 from telebot import types
 
+bot = telebot.TeleBot("7529116619:AAHX9asjSFGZ2AGMeHVh1Tz4woy0Z7vDrG0")
 
-bot_token = "TOKEN"
-bot = telebot.TeleBot(token=bot_token)
 text_messages = {
     'right_user':
         'Usa esto para acordarte de los cumples porque eres un despistado y usar una agenda es demasiado sencillo',
     'wrong_user':
         'Hola! Lo siento pero de momento solo mi credor puede usarme'
 }
-ID = 291461811
+ALLOW_ALL = False
+ID = 1056815866
 first_time = False
 scheduler = BackgroundScheduler()
 #List with all the posible months
@@ -36,7 +36,7 @@ commands=[
 ]
 #Checks if the user's id
 def is_me(user_id):
-    return user_id == ID
+    return ALLOW_ALL or user_id == ID
 #check if a given name is already register with a birthday
 def already_exists(nombre):
     with open("cumples.csv", "r") as f:
@@ -53,7 +53,7 @@ def search_birthdays():
         month = cumple[2].split("\r\n")[0]
         if (str(date.day) == day and date.month == months.get(month)):
             msg = ("¡Hoy es el cumpleaños de " + cumple[0] + " !")
-            bot.send_message(291461811, msg)
+            bot.send_message(ID, msg)
 
         
 @bot.message_handler(commands=['start'])
